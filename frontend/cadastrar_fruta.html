@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Cadastrar Nova Fruta</title>
+</head>
+<body>
+
+    <h1>Cadastrar Nova Fruta</h1>
+<div class="formulario">
+    <form id="formCadastrarFruta" method="post">
+
+        <div class="nome">
+            <label for="nome">Nome:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="descricao">
+            <label for="descricao">Descrição:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+
+        <div class="preco">
+            <label for="preco">Vendido por:</label>
+            <input type="text" id="price" name="price" required>
+        </div>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+</div>
+
+    <script>
+        const baseUrl = 'http://localhost' ;
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            const formCadastrarFruta = document.getElementById('formCadastrarFruta');
+
+            formCadastrarFruta.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                // Obtenha os dados do formulário
+                const name = document.getElementById('name').value;
+                const description = document.getElementById('description').value;
+                const price = document.getElementById('price').value;
+
+                // Crie um objeto com os dados
+                const data = {
+                    name: name,
+                    description: description,
+                    price: price
+                };
+
+                // Faça uma requisição POST para a sua API PHP
+                fetch(`${baseUrl}/APHPI/API/v1/index.php/frutas`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Verifique a resposta da API, pode adicionar lógica de tratamento aqui se necessário
+                    console.log('Resposta da API:', data);
+
+                    // Após cadastrar a fruta, redirecione para a página inicial
+                    window.location.href = 'index.html';
+                })
+                .catch(error => console.error('Erro ao enviar dados para a API:', error));
+            });
+        });
+    </script>
+
+</body>
+</html>

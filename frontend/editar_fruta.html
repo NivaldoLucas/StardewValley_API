@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Editar Fruta</title>
+</head>
+<body>
+
+    <h1>Editar Fruta</h1>
+<div class="formulario">
+    <form id="formEditarFruta" method="put">
+        <label for="editNome">Nome:</label>
+        <input type="text" id="editNome" name="name" required>
+
+        <label for="editDescricao">Descrição:</label>
+        <textarea id="editDescricao" name="description" required></textarea>
+
+        <label for="editPreco">Preço:</label>
+        <input type="text" id="editPreco" name="price" required>
+
+        <button type="submit">Salvar</button>
+    </form>
+</div>
+
+    <script>
+
+        const baseUrl = 'http://localhost' ;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const formEditarFruta = document.getElementById('formEditarFruta');
+            const urlParams = new URLSearchParams(window.location.search);
+            const frutaId = urlParams.get('id');
+
+            // Função para preencher o formulário de edição com os dados da fruta selecionada
+            function preencherFormularioEdicao(fruta) {
+                document.getElementById('editNome').value = fruta.name;
+                document.getElementById('editDescricao').value = fruta.description;
+                document.getElementById('editPreco').value = fruta.price;
+            }
+
+            // Evento de envio do formulário de edição
+            formEditarFruta.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                // Obtém os dados do formulário de edição
+                const editedData = {
+                    name: document.getElementById('editNome').value,
+                    description: document.getElementById('editDescricao').value,
+                    price: document.getElementById('editPreco').value,
+                };
+
+                // Adicione código para enviar os dados do formulário via PUT para a sua API PHP
+                fetch(`${baseUrl}/APHPI/API/v1/index.php/frutas/${frutaId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(editedData),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Após editar a fruta, redirecione para a página inicial ou outra página desejada
+                    window.location.href = 'index.html';  // Substitua pelo nome correto da sua página inicial
+                })
+                .catch(error => console.error('Erro ao editar fruta:', error));
+            });
+
+            // Chamada para obter os dados da fruta a ser editada
+            fetch(`${baseUrl}/APHPI/API/v1/index.php/frutas/${frutaId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Preenche o formulário com os dados da fruta
+                    preencherFormularioEdicao(data);
+                })
+                .catch(error => console.error('Erro ao obter dados da fruta:', error));
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Lista de Itens</title>
+    <div class="galinha"></div>
+    <div class="junimo"></div>
+</head>
+<body>
+
+<div class="containerfruta">
+
+    <h1 class="title-list">Lista de Frutas</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <!-- <th>ID</th> -->
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Vendido por</th>
+                <th style="width: 200px;">Ação</th>
+            </tr>
+        </thead>
+        <tbody id="frutas-table-body"></tbody>
+    </table>
+
+    <button class="btncadastrar" id="btnCadastrarFruta">Cadastrar Nova Fruta</button>
+</div>
+
+<div class="containerpedra">
+    <h1 class="title-list">Lista de Pedras</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <!--<th>ID</th> -->
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Vendido por</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody id="pedras-table-body"></tbody>
+    </table>
+
+    <button class="btncadastrar" id="btnCadastrarPedra">Cadastrar Nova Pedra</button>
+</div>
+
+<script>
+    const baseUrl = 'http://localhost' ;
+    
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const frutasTableBody = document.getElementById('frutas-table-body');
+        const pedrasTableBody = document.getElementById('pedras-table-body');
+
+        // Função para obter e exibir a lista de frutas
+        function getFrutas() {
+            fetch(`${baseUrl}/APHPI/API/v1/index.php/frutas`)
+                .then(response => response.json())
+                .then(data => {
+                    frutasTableBody.innerHTML = '';
+                    data.forEach(fruta => {
+                        const row = frutasTableBody.insertRow();
+                        row.insertCell(0).textContent = fruta.name;
+                        row.insertCell(1).textContent = fruta.description;
+                        row.insertCell(2).textContent = fruta.price;
+
+                        const btnEditar = document.createElement('button');
+                        btnEditar.textContent = 'Editar';
+                        btnEditar.classList.add('btn-edit');
+                        btnEditar.addEventListener('click', function () {
+                            window.location.href = `editar_fruta.html?type=fruta&id=${fruta.id}`;
+                        });
+
+                        const btnDeletar = document.createElement('button');
+                            btnDeletar.textContent = 'Deletar';
+                            btnDeletar.classList.add('btn-delete');
+                            btnDeletar.setAttribute('data-id', fruta.id);
+                        
+                        btnEditar.addEventListener('click', function () {
+                            // Chama a função de edição ao clicar no botão
+                            editarItem('frutas', fruta.id);
+                        });
+
+                        btnDeletar.addEventListener('click', function () {
+                                // Chama a função de deleção ao clicar no botão
+                                deletarItem('frutas', fruta.id);
+                        });
+
+                        const cell = row.insertCell(3);
+                            cell.appendChild(btnEditar);
+                            cell.appendChild(btnDeletar);
+                        
+                    });
+                })
+                .catch(error => console.error('Erro ao obter frutas:', error));
+        }
+
+        // Função para obter e exibir a lista de pedras
+        function getPedras() {
+            fetch(`${baseUrl}/APHPI/API/v1/index.php/pedras`)
+                .then(response => response.json())
+                .then(data => {
+                    pedrasTableBody.innerHTML = '';
+                    data.forEach(pedra => {
+                        const row = pedrasTableBody.insertRow();
+                        row.insertCell(0).textContent = pedra.name;
+                        row.insertCell(1).textContent = pedra.description;
+                        row.insertCell(2).textContent = pedra.price;
+
+                        const btnEditar = document.createElement('button');
+                        btnEditar.textContent = 'Editar';
+                        btnEditar.classList.add('btn-edit');
+                        btnEditar.addEventListener('click', function () {
+                            window.location.href = `editar_pedra.html?type=pedra&id=${pedra.id}`;
+                        });
+
+                        const btnDeletar = document.createElement('button');
+                            btnDeletar.textContent = 'Deletar';
+                            btnDeletar.classList.add('btn-delete');
+                            btnDeletar.setAttribute('data-id', pedra.id);
+
+                        btnEditar.addEventListener('click', function () {
+                                // Chama a função de edição ao clicar no botão
+                                editarItem('pedras', pedra.id);
+                            });
+
+                            btnDeletar.addEventListener('click', function () {
+                                // Chama a função de deleção ao clicar no botão
+                                deletarItem('pedras', pedra.id);
+                            });
+                        
+                        const cell = row.insertCell(3);
+                        cell.appendChild(btnEditar);
+                        cell.appendChild(btnDeletar);
+                    });
+                })
+                .catch(error => console.error('Erro ao obter pedras:', error));
+        }
+
+        // Função para deletar um item
+        function deletarItem(tipo, itemId) {
+                // Adicione código para enviar um pedido DELETE para a sua API PHP
+                fetch(`${baseUrl}/APHPI/API/v1/index.php/${tipo}/${itemId}`, {
+                    method: 'DELETE',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Atualize a lista após a deleção
+                        if (tipo === 'frutas') {
+                            getFrutas();
+                        } else if (tipo === 'pedras') {
+                            getPedras();
+                        }
+                    })
+                    .catch(error => console.error(`Erro ao deletar ${tipo}:`, error));
+            }
+
+        // Chamada inicial para obter a lista de frutas e pedras ao carregar a página
+        getFrutas();
+        getPedras();
+
+        document.getElementById('btnCadastrarFruta').addEventListener('click', function () {
+            window.location.href = 'cadastrar_fruta.html?type=fruta';
+        });
+
+        document.getElementById('btnCadastrarPedra').addEventListener('click', function () {
+            window.location.href = 'cadastrar_pedra.html?type=pedra';
+        });
+    });
+</script>
+
+</body>
+</html>

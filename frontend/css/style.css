@@ -1,0 +1,100 @@
+body {
+    background-image: Url(https://pt.stardewvalleywiki.com/mediawiki/extensions/StardewValley/images/stardewbackground.png) ;
+    background-repeat: no-repeat;
+    background-size: cover ; 
+    background-attachment: fixed;
+    font-family: stardewfont; font-size: large;
+    
+    
+}
+
+.galinha {
+    float: inline-end;
+    width: 100px;
+    height: 100px;
+    content: url('galinha.png');
+
+}
+
+.junimo {
+    float: inline-start;
+    width: 100px;
+    height: 100px;
+    content: url('junimo.png');
+
+}
+
+.containerfruta{
+    background-color: rgba(0, 234, 255, 0.174); /* Cor azul para o conteúdo central */
+    padding: 20px; /* Espaçamento interno para as tabelas */
+    margin-top: 10%;
+    margin-left: 15%;
+    margin-right: 15%;
+    border: 2px solid rgba(0, 217, 255, 0.477);
+    border-bottom: 0;
+}
+
+.containerpedra{
+    background-color: rgba(0, 234, 255, 0.174); /* Cor azul para o conteúdo central */
+    padding: 20px; /* Espaçamento interno para as tabelas */
+    
+    margin-bottom: 10%;
+    margin-left: 15%;
+    margin-right: 15%;
+    border: 2px solid rgba(0, 217, 255, 0.477);
+    border-top: 0;
+}
+
+@font-face {
+    font-family: stardewfont;
+    src: url(Stardew_Valley.ttf);
+}
+
+.title-list{
+    text-align: center;
+    font-family: stardewfont;
+
+}
+
+table {
+    background-color: rgba(254, 255, 255, 0.284);
+    border-collapse: collapse;
+    width: 100%;
+    color: #000000;
+}
+
+table, th, td {
+    background-color: rgba(254, 255, 255, 0.284);
+    
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+
+
+/* Estilos para o formulário */
+.formulario {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Estilos para os rótulos e campos do formulário */
+.formulario label,
+.formulario input,
+.formulario textarea {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.formulario input[type="text"],
+.formulario textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
